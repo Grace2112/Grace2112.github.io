@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Pizzarrone - Raccogli gli Oggetti</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      overflow: hidden;
+    }
+    h1 {
+      text-align: center;
+      color: #444;
+      margin: 20px 0;
+    }
+    #game-area {
+      position: relative;
+      width: 100%;
+      height: 80vh;
+      background: #fff;
+      border: 2px solid #ccc;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    .object {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    #score {
+      text-align: center;
+      font-size: 24px;
+      margin: 10px 0;
+    }
+    #timer {
+      text-align: center;
+      font-size: 24px;
+      margin: 10px 0;
+      color: #d9534f;
+    }
+    #start-btn {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 18px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #start-btn:active {
+      background: #1e7e34;
+    }
+  </style>
+</head>
+<body>
+  <h1>Pizzarrone - Raccogli gli Oggetti</h1>
+  <div id="timer">Tempo rimasto: 30s</div>
+  <div id="score">Punteggio: 0</div>
+  <button id="start-btn">Inizia il Gioco</button>
+  <div id="game-area"></div>
+
+  <script>
+    const gameArea = document.getElementById("game-area");
+    const startBtn = document.getElementById("start-btn");
+    const scoreDisplay = document.getElementById("score");
+    const timerDisplay = document.getElementById("timer");
+    let score = 0;
+    let timeLeft = 30;
+    let gameInterval, objectInterval;
+
+    // Crea un colore casuale
+    function getRandomColor() {
+      const letters = "0123456789ABCDEF";
+      let color = "#";
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+    // Crea un oggetto in una posizione casuale con un colore casuale
+    function createObject() {
+      const object = document.createElement("div");
+      object.classList.add("object");
+
+      const x = Math.random() * (gameArea.offsetWidth - 50);
+      const y = Math.random() * (gameArea.offsetHeight - 50);
+      object.style.left = `${x}px`;
+      object.style.top = `${y}px`;
+      object.style.backgroundColor = getRandomColor();
+
+      gameArea.appendChild(object);
+
+      // Rimuovi l'oggetto dopo un po' di tempo se non viene cliccato
+      const removeTimeout = setTimeout(() => {
+        object.remove();
+      }, 1000);
+
+      // Incrementa il punteggio se viene cliccato
+      object.addEventListener("click", () => {
+        score++;
+        scoreDisplay.textContent = `Punteggio: ${score}`;
+        clearTimeout(removeTimeout);
+        object.remove();
+      });
+    }
+
+    // Aggiorna il timer
+    function updateTimer() {
+      if (timeLeft > 0) {
+        timeLeft--;
+        timerDisplay.textContent = `Tempo rimasto: ${timeLeft}s`;
+      } else {
+        clearInterval(gameInterval);
+        clearInterval(objectInterval);
+        endGame();
+      }
+    }
+
+    // Fine del gioco
+    function endGame() {
+      alert(`Tempo scaduto testa di citronella! Hai totalizzato ${score} punti!`);
+      startBtn.style.display = "block";
+      gameArea.innerHTML = "";
+      timerDisplay.textContent = "Tempo rimasto: 30s";
+      scoreDisplay.textContent = "Punteggio: 0";
+      timeLeft = 30;
+      score = 0;
+    }
+
+    // Avvia il gioco
+    function startGame() {
+      startBtn.style.display = "none";
+      score = 0;
+      timeLeft = 30;
+      scoreDisplay.textContent = "Punteggio: 0";
+      timerDisplay.textContent = "Tempo rimasto: 30s";
+
+      // Genera oggetti ogni 700ms
+      objectInterval = setInterval(createObject, 500);
+
+      // Aggiorna il timer ogni secondo
+      gameInterval = setInterval(updateTimer, 1000);
+    }
+
+    // Inizia il gioco al clic sul pulsante
+    startBtn.addEventListener("click", startGame);
+
+    // Disabilita il doppio tap per lo zoom
+    document.addEventListener("touchstart", function(event) {
+      if (event.touches.length > 1) {
+        event.preventDefault();
+      }
+    }, { passive: false });
+  </script>
+</body>
+</html>
