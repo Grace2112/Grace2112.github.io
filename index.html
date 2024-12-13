@@ -19,8 +19,8 @@
     }
     #game-area {
       position: relative;
-      width: 300px; /* Larghezza ridotta */
-      height: 400px; /* Altezza ridotta */
+      width: 90vw; /* Usa il 90% della larghezza del viewport */
+      height: calc(70vh - 20px); /* Calcola un'altezza adattiva al viewport */
       background: #fff;
       border: 2px solid #ccc;
       margin: 20px auto;
@@ -147,7 +147,7 @@
       timerDisplay.textContent = "Tempo rimasto: 30s";
 
       // Genera oggetti ogni 700ms
-      objectInterval = setInterval(createObject, 700);
+      objectInterval = setInterval(createObject, 500);
 
       // Aggiorna il timer ogni secondo
       gameInterval = setInterval(updateTimer, 1000);
