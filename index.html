@@ -19,8 +19,8 @@
     }
     #game-area {
       position: relative;
-      width: 90vw; /* Usa il 90% della larghezza del viewport */
-      height: calc(70vh - 20px); /* Calcola un'altezza adattiva al viewport */
+      width: 250px; /* Riquadro più piccolo */
+      height: 300px; /* Riquadro più piccolo */
       background: #fff;
       border: 2px solid #ccc;
       margin: 20px auto;
@@ -30,8 +30,8 @@
     }
     .object {
       position: absolute;
-      width: 50px;
-      height: 50px;
+      width: 30px; /* Cerchi più piccoli */
+      height: 30px; /* Cerchi più piccoli */
       border-radius: 50%;
       cursor: pointer;
     }
@@ -93,8 +93,8 @@
       const object = document.createElement("div");
       object.classList.add("object");
 
-      const x = Math.random() * (gameArea.offsetWidth - 50);
-      const y = Math.random() * (gameArea.offsetHeight - 50);
+      const x = Math.random() * (gameArea.offsetWidth - 30); // Ridotto per i cerchi piccoli
+      const y = Math.random() * (gameArea.offsetHeight - 30); // Ridotto per i cerchi piccoli
       object.style.left = `${x}px`;
       object.style.top = `${y}px`;
       object.style.backgroundColor = getRandomColor();
